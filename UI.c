@@ -8,7 +8,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "UI.h"
-#include "Controller.h"
 #include "List.h"
 #include "Cheltuiala.h"
 
@@ -30,7 +29,7 @@ void UI_start(List* lista) {
 
         case 1: UI_adauga_cheltuiala(lista); break;
         case 2: UI_actualizeaza_cheltuiala(lista); break;
-//        case 3: UI_sterge_cheltuiala(lista); break;
+        case 3: UI_sterge_cheltuiala(lista); break;
 //        case 4: UI_vizualizare_lista_filtrat(lista); break;
 //        case 5: UI_vizualizare_lista_ordonat(lista); break;
 
@@ -50,17 +49,17 @@ void UI_adauga_cheltuiala(List* lista) {
 	printf("Tipul: ");
 	scanf("%s", tip);
 
-	Controller_add_apartament(lista, nrAp, suma, tip);
+	Cheltuiala *c = Cheltuiala_create(nrAp, suma, tip);
+	List_insert(lista, c);
 
 	printf("\nADAUGAT CU SUCCES!\n");
 }
 
-void UI_actualizeaza_cheltuiala(List* lista) {
-	int nrCheltuieli = lista->len, i, nr;
-
+int UI_getNr_cheltuiala(List* lista) {
+	int i, nr, nrCheltuieli = lista->len;
 	if (nrCheltuieli == 0) {
 		printf("Nici o cheltuiala in baza de date!\n");
-		return;
+		return -1;
 	}
 
 	printf("\nCheltuieli aflate in baza de date:\n");
@@ -70,14 +69,25 @@ void UI_actualizeaza_cheltuiala(List* lista) {
 		printf("%d) Nr. ap %d, suma %d, tip %s\n", i, Cheltuiala_getNrAp(c), Cheltuiala_getSuma(c), Cheltuiala_getTip(c));
 	}
 
-	printf("\nSelecteaza cheltuiala pe care doresti sa o actualizezi: ");
+	printf("\nSelecteaza cheltuiala: ");
 	scanf("%d", &nr);
 
 	if (nr < 0 || nr >= nrCheltuieli) {
 		printf("Numarul cheltuielii invalid\n");
-		return;
+		return -1;
 	}
 
+	return nr;
+}
+
+void UI_actualizeaza_cheltuiala(List* lista) {
+	int i, nr;
+	printf("\n ACTUALIZARE CHELTUIALA\n");
+	nr = UI_getNr_cheltuiala(lista);
+
+	if (nr == -1) {
+		return;
+	}
 	Cheltuiala *cur = List_getElem(lista, nr);
 
 	int sum;
@@ -92,4 +102,18 @@ void UI_actualizeaza_cheltuiala(List* lista) {
 	lista->data[nr] = newOne; //hack :)
 
 	printf("\nCheltuiala modificata cu succes\n");
+}
+
+void UI_sterge_cheltuiala(List* lista) {
+	int i, nr;
+	printf("\n STERGERE CHELTUIALA\n");
+	nr = UI_getNr_cheltuiala(lista);
+
+	if (nr == -1) {
+		return;
+	}
+
+	List_deleteElem(lista, nr);
+
+	printf("\nElement eliminat cu succes\n");
 }

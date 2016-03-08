@@ -49,9 +49,15 @@ void List_destroy(List *a) {
     free(a);
 }
 
-void List_modify(List *a, Cheltuiala *c, int poz) {
-	a->data[poz] = c;
+void List_deleteElem(List *a, int poz) {
+	Cheltuiala *t = a->data[poz];
+	int i;
+	for (i = poz; i < (a->len) - 1; ++i)
+		a->data[poz] = a->data[poz + 1];
+	free(t);
+	(a->len)--;
 }
+
 
 Cheltuiala* List_getElem(List *a, int poz) {
     return a->data[poz];
@@ -67,7 +73,7 @@ void List_test() {
 	List_insert(a, c0);
 	List_insert(a, c1);
 
-	assert(List_getElem(a, 0) == c0);//testeaza si daca nu assert
+	assert(List_getElem(a, 0) == c0);
 	assert(List_getElem(a, 1) == c1);
 
 	List_insert(a, c2);
