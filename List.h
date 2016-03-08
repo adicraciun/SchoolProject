@@ -19,6 +19,8 @@ List* List_create();
 
 void List_insert(List* a, Cheltuiala* elem);
 
+void List_modify(List *a, Cheltuiala *c, int poz);
+
 void List_destroy(List *a);
 
 Cheltuiala* List_getElem(List *a, int poz);

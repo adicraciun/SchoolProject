@@ -8,17 +8,19 @@
 #ifndef UI_H_
 #define UI_H_
 
-void UI_start();
+#include "List.h"
 
-void UI_adauga_cheltuiala();
+void UI_start(List*);
 
-void UI_actualizeaza_produs();
+void UI_adauga_cheltuiala(List*);
 
-void UI_sterge_produs();
+void UI_actualizeaza_cheltuiala(List*);
 
-void UI_vizualizare_lista_filtrat();
+void UI_sterge_cheltuiala(List*);
 
-void UI_vizualizare_lista_ordonat();
+void UI_vizualizare_lista_filtrat(List*);
+
+void UI_vizualizare_lista_ordonat(List*);
 
 
 #endif /* UI_H_ */

@@ -15,7 +15,9 @@ int main() {
 	Cheltuiala_test();
 	List_test();
 
-	UI_start();
+	List* repo = List_create();
+
+	UI_start(repo);
 
 	return 0;
 }

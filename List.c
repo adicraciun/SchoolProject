@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include "List.h"
+#include "Cheltuiala.h"
 
 List* List_create() {
     List* obj = malloc(sizeof(List));
@@ -46,6 +47,10 @@ void List_destroy(List *a) {
 
     free(a->data);
     free(a);
+}
+
+void List_modify(List *a, Cheltuiala *c, int poz) {
+	a->data[poz] = c;
 }
 
 Cheltuiala* List_getElem(List *a, int poz) {
