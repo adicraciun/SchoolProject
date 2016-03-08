@@ -8,11 +8,14 @@
 #include <stdlib.h>
 #include "Cheltuiala.h"
 #include "List.h"
+#include "UI.h"
 
 int main() {
 
 	Cheltuiala_test();
 	List_test();
+
+	UI_start();
 
 	return 0;
 }
