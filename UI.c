@@ -12,6 +12,7 @@
 #include "UI.h"
 #include "List.h"
 #include "Cheltuiala.h"
+#include "errors.h"
 
 void UI_start(List* lista) {
     printf("Bine ai venit in gestionarul de cheltuieli!\n");
@@ -41,6 +42,22 @@ void UI_start(List* lista) {
     }
 }
 
+int UI_Error() {
+	if (errno == SUMAERROR) {
+		printf("\nSuma trebuie sa fie pozitiva\n");
+		return 1;
+	}
+	if (errno == NRAPERROR) {
+		printf("\nNumarul apartamentului trebuie sa fie pozitiv\n");
+		return 1;
+	}
+	if (errno == TIPERROR) {
+		printf("\nTip apartamentului trebuie sa fie unul din urmatoarele apa, canal, incalzire, gaz\n");
+		return 1;
+	}
+	return 0;
+}
+
 void UI_adauga_cheltuiala(List* lista) {
 	int nrAp, suma;
 	char tip[50];
@@ -54,7 +71,8 @@ void UI_adauga_cheltuiala(List* lista) {
 
 	Controller_adauga_cheltuiala(lista, nrAp, suma, tip);
 
-	printf("\nADAUGAT CU SUCCES!\n");
+	if (!UI_Error())
+		printf("\nADAUGAT CU SUCCES!\n");
 }
 
 int UI_getNr_cheltuiala(List* lista) {
@@ -97,7 +115,8 @@ void UI_actualizeaza_cheltuiala(List* lista) {
 
 	Controller_actualizeaza_cheltuiala(lista, nr, sum, tip);
 
-	printf("\nCheltuiala modificata cu succes\n");
+	if(!UI_Error())
+		printf("\nCheltuiala modificata cu succes\n");
 }
 
 void UI_sterge_cheltuiala(List* lista) {

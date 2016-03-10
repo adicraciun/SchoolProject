@@ -35,7 +35,6 @@ char** _getArrayOfTip() {
     Parametrii: un string cu tipul
     Returneaza un int cu tipul
 
-
 */
 
 int _getTip(char* tip) {

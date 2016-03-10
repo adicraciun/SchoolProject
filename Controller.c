@@ -99,7 +99,9 @@ List* Controller_getListaFiltrat_nrAp(List* lista, int nrAp) {
 
 void Controller_adauga_cheltuiala(List* lista, int nrAp, int suma, char* tip) {
 	Cheltuiala *c = Cheltuiala_create(nrAp, suma, tip);
-	List_insert(lista, c);
+
+	if (Cheltuiala_validator(nrAp, suma, tip))
+		List_insert(lista, c);
 }
 
 void Controller_sterge_cheltuiala(List* lista, int nr) {
@@ -109,8 +111,12 @@ void Controller_sterge_cheltuiala(List* lista, int nr) {
 void Controller_actualizeaza_cheltuiala(List* lista, int nr, int sum, char* tip) {
 	Cheltuiala *cur = List_getElem(lista, nr);
 
-	Cheltuiala *newOne = Cheltuiala_create(Cheltuiala_getNrAp(cur), sum, tip);
-	lista->data[nr] = newOne;
+	const int nrAp = 1;
+
+	if (Cheltuiala_validator(nrAp, sum, tip)) {
+		Cheltuiala *newOne = Cheltuiala_create(Cheltuiala_getNrAp(cur), sum, tip);
+		lista->data[nr] = newOne;
+	}
 }
 
 

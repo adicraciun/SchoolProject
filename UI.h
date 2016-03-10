@@ -14,6 +14,8 @@
 
 void UI_start(List*);
 
+int UI_Error();
+
 void UI_adauga_cheltuiala(List*);
 
 void UI_actualizeaza_cheltuiala(List*);

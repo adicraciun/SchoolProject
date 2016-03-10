@@ -8,6 +8,8 @@
 #ifndef CONTROLLER_H_
 #define CONTROLLER_H_
 
+#include "Cheltuiala_validator.h"
+
 List* Controller_getListaOrd_tip(List*);
 
 List* Controller_getListaOrd_suma(List*);
