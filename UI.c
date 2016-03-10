@@ -33,7 +33,7 @@ void UI_start(List* lista) {
         case 2: UI_actualizeaza_cheltuiala(lista); break;
         case 3: UI_sterge_cheltuiala(lista); break;
         case 4: UI_vizualizare_lista_filtrat(lista); break;
-//        case 5: UI_vizualizare_lista_ordonat(lista); break;
+        case 5: UI_vizualizare_lista_ordonat(lista); break;
 
         }
         if (op == 6) break;
@@ -185,3 +185,69 @@ void UI_vizualizare_lista_filtrat_3(List* lista) {
 void UI_afiseaza_cheltuiala(Cheltuiala *c, int nrOrd) {
 	printf("%d) Nr. ap %d, suma %d, tip %s\n", nrOrd, Cheltuiala_getNrAp(c), Cheltuiala_getSuma(c), Cheltuiala_getTip(c));
 }
+
+
+void UI_vizualizare_lista_ordonat(List* lista) {
+	printf("\nSelecteaza criteriul de ordonare\n");
+	printf("1)Suma\n");
+	printf("2)Tip\n");
+	int op;
+	printf("Optiunea ta: ");
+	scanf("%d", &op);
+	printf("\n");
+
+	switch(op){
+		case 1: UI_vizualizare_lista_ordonat_1(lista); break;
+		case 2: UI_vizualizare_lista_ordonat_2(lista); break;
+	}
+}
+
+int UI_cmp_1(const void *p1, const void *p2) {
+	if ((*(Cheltuiala**)p1)->suma < (*(Cheltuiala**)p2)->suma)
+		return -1;
+	if ((*(Cheltuiala**)p1)->suma == (*(Cheltuiala**)p2)->suma)
+		return 0;
+	return 1;
+}
+
+void UI_vizualizare_lista_ordonat_1(List* lista) {
+	List *listaOrd;
+
+	listaOrd = List_create();
+
+	List_copy(listaOrd, lista);
+
+	qsort(listaOrd->data, listaOrd->len, sizeof(Cheltuiala*), UI_cmp_1);
+
+	int i;
+
+	for (i = 0; i < listaOrd->len; ++i) {
+		Cheltuiala *c = List_getElem(listaOrd, i);
+		UI_afiseaza_cheltuiala(c, i);
+	}
+}
+
+
+int UI_cmp_2(const void *p1, const void *p2) {
+	return strcmp(Cheltuiala_getTip((*(Cheltuiala**)p1)), Cheltuiala_getTip((*(Cheltuiala**)p2)));
+}
+
+void UI_vizualizare_lista_ordonat_2(List* lista) {
+	List *listaOrd;
+
+	listaOrd = List_create();
+
+	List_copy(listaOrd, lista);
+
+	qsort(listaOrd->data, listaOrd->len, sizeof(Cheltuiala*), UI_cmp_2);
+
+	int i;
+
+	for (i = 0; i < listaOrd->len; ++i) {
+		Cheltuiala *c = List_getElem(listaOrd, i);
+		UI_afiseaza_cheltuiala(c, i);
+	}
+}
+
+
+

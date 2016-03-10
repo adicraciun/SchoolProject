@@ -25,6 +25,8 @@ void List_destroy(List *a);
 
 Cheltuiala* List_getElem(List *a, int poz);
 
+void List_copy(List *b, List *a);
+
 void List_test();
 
 void List_deleteElem(List *a, int poz);

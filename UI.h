@@ -29,6 +29,10 @@ void UI_vizualizare_lista_filtrat_3(List* lista);
 
 void UI_vizualizare_lista_ordonat(List*);
 
+void UI_vizualizare_lista_ordonat_1(List*);
+
+void UI_vizualizare_lista_ordonat_2(List*);
+
 void UI_afiseaza_cheltuiala(Cheltuiala*, int);
 
 #endif /* UI_H_ */

@@ -18,6 +18,8 @@ int Cheltuiala_getNrAp(Cheltuiala *a);
 
 int Cheltuiala_getSuma(Cheltuiala *a);
 
+void Cheltuiala_destroy(Cheltuiala *a);
+
 char* Cheltuiala_getTip(Cheltuiala *a);
 
 void Cheltuiala_test();

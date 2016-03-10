@@ -58,6 +58,13 @@ void List_deleteElem(List *a, int poz) {
 	(a->len)--;
 }
 
+void List_copy(List *b, List *a) {
+	int i;
+
+	for (i = 0; i < a->len; ++i)
+		List_insert(b, List_getElem(a, i));
+}
+
 
 Cheltuiala* List_getElem(List *a, int poz) {
     return a->data[poz];
@@ -80,6 +87,13 @@ void List_test() {
 
 	assert(List_getElem(a, 1) == c1);
 	assert(List_getElem(a, 2) == c2);
+
+	List *b = List_create();
+
+	List_copy(b, a);
+
+	assert(List_getElem(b, 1) == c1);
+	assert(List_getElem(b, 2) == c2);
 }
 
 

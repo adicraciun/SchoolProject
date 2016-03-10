@@ -113,6 +113,7 @@ void Cheltuiala_test() {
     assert(Cheltuiala_getSuma(a) == 120);
     assert(Cheltuiala_getTip(a) == "canal");
 
+
 }
 
 void Cheltuiala_destroy(Cheltuiala *a) {
