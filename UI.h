@@ -10,6 +10,7 @@
 
 #include "List.h"
 #include "Cheltuiala.h"
+#include "Controller.h"
 
 void UI_start(List*);
 
@@ -21,18 +22,20 @@ void UI_sterge_cheltuiala(List*);
 
 void UI_vizualizare_lista_filtrat(List*);
 
-void UI_vizualizare_lista_filtrat_1(List* lista);
+void UI_vizualizare_lista_filtrat_nrAp(List* lista);
 
-void UI_vizualizare_lista_filtrat_2(List* lista);
+void UI_vizualizare_lista_filtrat_suma(List* lista);
 
-void UI_vizualizare_lista_filtrat_3(List* lista);
+void UI_vizualizare_lista_filtrat_tip(List* lista);
 
 void UI_vizualizare_lista_ordonat(List*);
 
-void UI_vizualizare_lista_ordonat_1(List*);
+void UI_vizualizare_lista_ordonat_suma(List*);
 
-void UI_vizualizare_lista_ordonat_2(List*);
+void UI_vizualizare_lista_ordonat_tip(List*);
 
 void UI_afiseaza_cheltuiala(Cheltuiala*, int);
+
+void UI_afiseaza_lista(List* lista);
 
 #endif /* UI_H_ */

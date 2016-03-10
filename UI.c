@@ -52,24 +52,20 @@ void UI_adauga_cheltuiala(List* lista) {
 	printf("Tipul: ");
 	scanf("%s", tip);
 
-	Cheltuiala *c = Cheltuiala_create(nrAp, suma, tip);
-	List_insert(lista, c);
+	Controller_adauga_cheltuiala(lista, nrAp, suma, tip);
 
 	printf("\nADAUGAT CU SUCCES!\n");
 }
 
 int UI_getNr_cheltuiala(List* lista) {
-	int i, nr, nrCheltuieli = lista->len;
+	int nr, nrCheltuieli = lista->len;
 	if (nrCheltuieli == 0) {
 		printf("Nici o cheltuiala in baza de date!\n");
 		return -1;
 	}
 
 	printf("\nCheltuieli aflate in baza de date:\n");
-	for (i = 0; i < nrCheltuieli; ++i) {
-		Cheltuiala *c = List_getElem(lista, i);
-		UI_afiseaza_cheltuiala(c, i);
-	}
+	UI_afiseaza_lista(lista);
 
 	printf("\nSelecteaza cheltuiala: ");
 	scanf("%d", &nr);
@@ -90,7 +86,6 @@ void UI_actualizeaza_cheltuiala(List* lista) {
 	if (nr == -1) {
 		return;
 	}
-	Cheltuiala *cur = List_getElem(lista, nr);
 
 	int sum;
 	char* tip;
@@ -100,8 +95,7 @@ void UI_actualizeaza_cheltuiala(List* lista) {
 	printf("Noul tip: ");
 	scanf("%s", tip);
 
-	Cheltuiala *newOne = Cheltuiala_create(Cheltuiala_getNrAp(cur), sum, tip);
-	lista->data[nr] = newOne; //hack :)
+	Controller_actualizeaza_cheltuiala(lista, nr, sum, tip);
 
 	printf("\nCheltuiala modificata cu succes\n");
 }
@@ -115,7 +109,7 @@ void UI_sterge_cheltuiala(List* lista) {
 		return;
 	}
 
-	List_deleteElem(lista, nr);
+	Controller_sterge_cheltuiala(lista, nr);
 
 	printf("\nElement eliminat cu succes\n");
 }
@@ -132,54 +126,51 @@ void UI_vizualizare_lista_filtrat(List* lista) {
 	scanf("%d", &op);
 
 	switch(op) {
-		case 1: UI_vizualizare_lista_filtrat_1(lista); break;
-		case 2: UI_vizualizare_lista_filtrat_2(lista); break;
-		case 3: UI_vizualizare_lista_filtrat_3(lista); break;
+		case 1: UI_vizualizare_lista_filtrat_nrAp(lista); break;
+		case 2: UI_vizualizare_lista_filtrat_suma(lista); break;
+		case 3: UI_vizualizare_lista_filtrat_tip(lista); break;
 	}
 
 }
 
-void UI_vizualizare_lista_filtrat_1(List* lista) {
+void UI_afiseaza_lista(List* lista) {
+	int i;
+
+	for (i = 0; i < lista->len; ++i) {
+		Cheltuiala *c = List_getElem(lista, i);
+		UI_afiseaza_cheltuiala(c, i);
+	}
+
+}
+
+void UI_vizualizare_lista_filtrat_nrAp(List* lista) {
 	printf("\n Numarul apartamentului: ");
-	int nrAp, i, nrAf = 0;
+	int nrAp;
 	scanf("%d", &nrAp);
 	printf("\n");
 
-	for (i = 0; i < lista->len; ++i) {
-		Cheltuiala *c = List_getElem(lista, i);
-
-		if (Cheltuiala_getNrAp(c) == nrAp)
-			UI_afiseaza_cheltuiala(c, nrAf++);
-	}
+	UI_afiseaza_lista(Controller_getListaFiltrat_nrAp(lista, nrAp));
 }
 
-void UI_vizualizare_lista_filtrat_2(List* lista) {
+
+
+void UI_vizualizare_lista_filtrat_suma(List* lista) {
 	printf("\n Suma: ");
-	int suma, i, nrAf = 0;
+	int suma;
 	scanf("%d", &suma);
 	printf("\n");
 
-	for (i = 0; i < lista->len; ++i) {
-		Cheltuiala *c = List_getElem(lista, i);
-
-		if (Cheltuiala_getSuma(c) == suma)
-			UI_afiseaza_cheltuiala(c, nrAf++);
-	}
+	UI_afiseaza_lista(Controller_getListaFiltrat_suma(lista, suma));
 }
 
-void UI_vizualizare_lista_filtrat_3(List* lista) {
+void UI_vizualizare_lista_filtrat_tip(List* lista) {
 	printf("\n Tipul: ");
-	int i, nrAf = 0;
 	char tip[50];
 	scanf("%s", tip);
 	printf("\n");
 
-	for (i = 0; i < lista->len; ++i) {
-		Cheltuiala *c = List_getElem(lista, i);
+	UI_afiseaza_lista(Controller_getListaFiltrat_tip(lista, tip));
 
-		if (strcmp(Cheltuiala_getTip(c), tip) == 0)
-			UI_afiseaza_cheltuiala(c, nrAf++);
-	}
 }
 
 void UI_afiseaza_cheltuiala(Cheltuiala *c, int nrOrd) {
@@ -197,56 +188,18 @@ void UI_vizualizare_lista_ordonat(List* lista) {
 	printf("\n");
 
 	switch(op){
-		case 1: UI_vizualizare_lista_ordonat_1(lista); break;
-		case 2: UI_vizualizare_lista_ordonat_2(lista); break;
+		case 1: UI_vizualizare_lista_ordonat_suma(lista); break;
+		case 2: UI_vizualizare_lista_ordonat_tip(lista); break;
 	}
 }
 
-int UI_cmp_1(const void *p1, const void *p2) {
-	if ((*(Cheltuiala**)p1)->suma < (*(Cheltuiala**)p2)->suma)
-		return -1;
-	if ((*(Cheltuiala**)p1)->suma == (*(Cheltuiala**)p2)->suma)
-		return 0;
-	return 1;
-}
-
-void UI_vizualizare_lista_ordonat_1(List* lista) {
-	List *listaOrd;
-
-	listaOrd = List_create();
-
-	List_copy(listaOrd, lista);
-
-	qsort(listaOrd->data, listaOrd->len, sizeof(Cheltuiala*), UI_cmp_1);
-
-	int i;
-
-	for (i = 0; i < listaOrd->len; ++i) {
-		Cheltuiala *c = List_getElem(listaOrd, i);
-		UI_afiseaza_cheltuiala(c, i);
-	}
+void UI_vizualizare_lista_ordonat_suma(List* lista) {
+	UI_afiseaza_lista(Controller_getListaOrd_suma(lista));
 }
 
 
-int UI_cmp_2(const void *p1, const void *p2) {
-	return strcmp(Cheltuiala_getTip((*(Cheltuiala**)p1)), Cheltuiala_getTip((*(Cheltuiala**)p2)));
-}
-
-void UI_vizualizare_lista_ordonat_2(List* lista) {
-	List *listaOrd;
-
-	listaOrd = List_create();
-
-	List_copy(listaOrd, lista);
-
-	qsort(listaOrd->data, listaOrd->len, sizeof(Cheltuiala*), UI_cmp_2);
-
-	int i;
-
-	for (i = 0; i < listaOrd->len; ++i) {
-		Cheltuiala *c = List_getElem(listaOrd, i);
-		UI_afiseaza_cheltuiala(c, i);
-	}
+void UI_vizualizare_lista_ordonat_tip(List* lista) {
+	UI_afiseaza_lista(Controller_getListaOrd_tip(lista));
 }
 
 

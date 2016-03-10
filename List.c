@@ -14,12 +14,12 @@ List* List_create() {
     List* obj = malloc(sizeof(List));
     obj->len = 0;
     obj->capacity = 2;
-    obj->data = malloc(sizeof(Cheltuiala*) * obj->capacity);
+    obj->data = malloc(sizeof(TElem) * obj->capacity);
     return obj;
 }
 
-void List_Realocate(List *a) {
-    Cheltuiala** newData = malloc(sizeof(Cheltuiala*) * a->capacity * 2);
+void List_realocate(List *a) {
+    TElem* newData = malloc(sizeof(TElem) * a->capacity * 2);
     int i;
 
     for (i = 0; i < a->len; ++i)
@@ -30,9 +30,9 @@ void List_Realocate(List *a) {
 }
 
 
-void List_insert(List* a, Cheltuiala* elem) {
+void List_insert(List* a, TElem elem) {
     if (a->len == a->capacity) {
-        List_Realocate(a);
+        List_realocate(a);
     }
 
     a->data[a->len] = elem;
@@ -66,7 +66,7 @@ void List_copy(List *b, List *a) {
 }
 
 
-Cheltuiala* List_getElem(List *a, int poz) {
+TElem List_getElem(List *a, int poz) {
     return a->data[poz];
 }
 

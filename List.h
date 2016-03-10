@@ -10,20 +10,22 @@
 
 #include "Cheltuiala.h"
 
+typedef Cheltuiala* TElem;
+
 typedef struct {
     int len, capacity;
-    Cheltuiala** data;
+    TElem* data;
 } List;
 
 List* List_create();
 
-void List_insert(List* a, Cheltuiala* elem);
+void List_insert(List* a, TElem elem);
 
-void List_modify(List *a, Cheltuiala *c, int poz);
+void List_modify(List *a, TElem c, int poz);
 
 void List_destroy(List *a);
 
-Cheltuiala* List_getElem(List *a, int poz);
+TElem List_getElem(List *a, int poz);
 
 void List_copy(List *b, List *a);
 
