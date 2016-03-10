@@ -7,6 +7,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <conio.h>
+#include <string.h>
 #include "UI.h"
 #include "List.h"
 #include "Cheltuiala.h"
@@ -30,11 +32,12 @@ void UI_start(List* lista) {
         case 1: UI_adauga_cheltuiala(lista); break;
         case 2: UI_actualizeaza_cheltuiala(lista); break;
         case 3: UI_sterge_cheltuiala(lista); break;
-//        case 4: UI_vizualizare_lista_filtrat(lista); break;
+        case 4: UI_vizualizare_lista_filtrat(lista); break;
 //        case 5: UI_vizualizare_lista_ordonat(lista); break;
 
         }
         if (op == 6) break;
+        getch();
     }
 }
 
@@ -64,9 +67,8 @@ int UI_getNr_cheltuiala(List* lista) {
 
 	printf("\nCheltuieli aflate in baza de date:\n");
 	for (i = 0; i < nrCheltuieli; ++i) {
-		Cheltuiala *c;
-		c = List_getElem(lista, i);
-		printf("%d) Nr. ap %d, suma %d, tip %s\n", i, Cheltuiala_getNrAp(c), Cheltuiala_getSuma(c), Cheltuiala_getTip(c));
+		Cheltuiala *c = List_getElem(lista, i);
+		UI_afiseaza_cheltuiala(c, i);
 	}
 
 	printf("\nSelecteaza cheltuiala: ");
@@ -81,7 +83,7 @@ int UI_getNr_cheltuiala(List* lista) {
 }
 
 void UI_actualizeaza_cheltuiala(List* lista) {
-	int i, nr;
+	int nr;
 	printf("\n ACTUALIZARE CHELTUIALA\n");
 	nr = UI_getNr_cheltuiala(lista);
 
@@ -105,7 +107,7 @@ void UI_actualizeaza_cheltuiala(List* lista) {
 }
 
 void UI_sterge_cheltuiala(List* lista) {
-	int i, nr;
+	int nr;
 	printf("\n STERGERE CHELTUIALA\n");
 	nr = UI_getNr_cheltuiala(lista);
 
@@ -116,4 +118,70 @@ void UI_sterge_cheltuiala(List* lista) {
 	List_deleteElem(lista, nr);
 
 	printf("\nElement eliminat cu succes\n");
+}
+
+void UI_vizualizare_lista_filtrat(List* lista) {
+	printf("\nFiltreaza dupa: \n");
+
+	printf("1) Numarul apartamentului\n");
+	printf("2) Suma\n");
+	printf("3) Tipul\n");
+
+	printf("Optiunea ta: ");
+	int op;
+	scanf("%d", &op);
+
+	switch(op) {
+		case 1: UI_vizualizare_lista_filtrat_1(lista); break;
+		case 2: UI_vizualizare_lista_filtrat_2(lista); break;
+		case 3: UI_vizualizare_lista_filtrat_3(lista); break;
+	}
+
+}
+
+void UI_vizualizare_lista_filtrat_1(List* lista) {
+	printf("\n Numarul apartamentului: ");
+	int nrAp, i, nrAf = 0;
+	scanf("%d", &nrAp);
+	printf("\n");
+
+	for (i = 0; i < lista->len; ++i) {
+		Cheltuiala *c = List_getElem(lista, i);
+
+		if (Cheltuiala_getNrAp(c) == nrAp)
+			UI_afiseaza_cheltuiala(c, nrAf++);
+	}
+}
+
+void UI_vizualizare_lista_filtrat_2(List* lista) {
+	printf("\n Suma: ");
+	int suma, i, nrAf = 0;
+	scanf("%d", &suma);
+	printf("\n");
+
+	for (i = 0; i < lista->len; ++i) {
+		Cheltuiala *c = List_getElem(lista, i);
+
+		if (Cheltuiala_getSuma(c) == suma)
+			UI_afiseaza_cheltuiala(c, nrAf++);
+	}
+}
+
+void UI_vizualizare_lista_filtrat_3(List* lista) {
+	printf("\n Tipul: ");
+	int i, nrAf = 0;
+	char tip[50];
+	scanf("%s", tip);
+	printf("\n");
+
+	for (i = 0; i < lista->len; ++i) {
+		Cheltuiala *c = List_getElem(lista, i);
+
+		if (strcmp(Cheltuiala_getTip(c), tip) == 0)
+			UI_afiseaza_cheltuiala(c, nrAf++);
+	}
+}
+
+void UI_afiseaza_cheltuiala(Cheltuiala *c, int nrOrd) {
+	printf("%d) Nr. ap %d, suma %d, tip %s\n", nrOrd, Cheltuiala_getNrAp(c), Cheltuiala_getSuma(c), Cheltuiala_getTip(c));
 }

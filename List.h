@@ -27,6 +27,7 @@ Cheltuiala* List_getElem(List *a, int poz);
 
 void List_test();
 
+void List_deleteElem(List *a, int poz);
 
 
 #endif /* LIST_H_ */
